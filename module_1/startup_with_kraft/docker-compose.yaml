@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   kafka-0:
     image: bitnami/kafka:3.4
