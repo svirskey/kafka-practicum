@@ -1,0 +1,5 @@
+1) Создание топика в контейнерном окружении
+
+docker exec -it practicum_2-kafka-0-1 kafka-topics.sh --create --topic user-msg --partitions 3 --replication-factor 2 --bootstrap-server kafka-0:9092
+
+2) 
