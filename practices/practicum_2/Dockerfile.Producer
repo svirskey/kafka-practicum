@@ -1,0 +1,21 @@
+# BUILD STAGE
+FROM golang:latest as builder
+
+WORKDIR /go_project/cmd/Producer
+
+COPY go.mod go.sum ./
+RUN go mod download && go mod verify
+
+COPY . .
+
+RUN go build
+
+# RUN STAGE
+FROM --platform=linux/x86_64 alpine:latest
+
+WORKDIR /go_project/cmd/Producer
+
+COPY --from=builder . .
+
+EXPOSE 8070
+CMD ["/go_project/cmd/Producer", "-mode=release"]
