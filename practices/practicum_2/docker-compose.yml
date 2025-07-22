@@ -76,6 +76,20 @@ services:
      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://kafka-0:9092
      SCHEMA_REGISTRY_HOST_NAME: schema-registry
      SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
+  app:
+   build:
+    context: .
+    dockerfile: Dockerfile
+   deploy:
+    mode: replicated
+    replicas: 2
+   depends_on:
+     - kafka-0
+     - kafka-1
+     - kafka-2
+     - schema-registry
+   ports:
+     - "3002-3003:3002"
 
 volumes:
   kafka_practicum_0_data:
