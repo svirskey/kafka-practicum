@@ -1,0 +1,19 @@
+# BUILD STAGE
+FROM golang:latest AS builder
+
+WORKDIR /user_message_project
+
+COPY ../user_message_project/ .
+
+RUN go mod download && go mod verify
+
+RUN go build -o app_producer ./cmd/producer/producer.go
+
+# RUN STAGE
+FROM ubuntu:24.04 AS runner
+
+WORKDIR /user_message_project
+
+COPY --from=builder /user_message_project/app_producer .
+
+CMD ["/user_message_project/app_producer", "-mode=release"]

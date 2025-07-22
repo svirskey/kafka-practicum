@@ -9,14 +9,11 @@ import (
 	"time"
 
 	"github.com/confluentinc/confluent-kafka-go/v2/kafka"
+
+	"github.com/svirskey/kafka-practicum/practices/practicum_2/user_message_project/internal/model"
+	"github.com/svirskey/kafka-practicum/practices/practicum_2/user_message_project/pkg/random"
 )
 
-// UserMessage – структура, описывающая сообщение пользователя
-type UserMessage struct {
-	UserId    string    `json:"user_id"`
-	Message   string    `json:"message"`
-	timestamp time.Time `json:"timestamp"`
-}
 
 func main() {
 
@@ -41,14 +38,10 @@ func main() {
 	deliveryChan := make(chan kafka.Event)
 
 	// Создаём заказ
-	value := &Order{
-		OrderID: "0001",
-		UserID:  "00001",
-		Items: []Item{
-			{ProductID: "535", Quantity: 1, Price: 300},
-			{ProductID: "125", Quantity: 2, Price: 100},
-		},
-		TotalPrice: 500.00,
+	value := &model.UserMessage{
+		UserId: random.randRange(0, 1000),
+		Message:  random.RandStringBytes(256),
+		timestamp: time.Now(),
 	}
 
 	// Сериализуем заказ в массив
