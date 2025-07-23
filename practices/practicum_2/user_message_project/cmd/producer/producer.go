@@ -37,11 +37,11 @@ func main() {
 	// Канал доставки событий (информации об отправленном сообщении)
 	deliveryChan := make(chan kafka.Event)
 
-	// Создаём заказ
+	// Создаём сообщение
 	value := &model.UserMessage{
-		UserId: random.randRange(0, 1000),
+		UserId: random.RandRange(0, 1000),
 		Message:  random.RandStringBytes(256),
-		timestamp: time.Now(),
+		Timestamp: time.Now(),
 	}
 
 	// Сериализуем заказ в массив
