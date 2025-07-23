@@ -12,6 +12,9 @@ RUN go build -o app_producer ./cmd/producer/producer.go
 # RUN STAGE
 FROM ubuntu:24.04 AS runner
 
+ENV KAFKA_BOOTSTRAP_SERVERS="localhost:9094"
+ENV KAFKA_TOPIC="user-msg"
+
 WORKDIR /user_message_project
 
 COPY --from=builder /user_message_project/app_producer .

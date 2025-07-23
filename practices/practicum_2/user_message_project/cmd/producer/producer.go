@@ -10,6 +10,8 @@ import (
 
 	"github.com/confluentinc/confluent-kafka-go/v2/kafka"
 
+	"github.com/svirskey/kafka-practicum/practices/practicum_2/user_message_project/config/producer"
+	config "github.com/svirskey/kafka-practicum/practices/practicum_2/user_message_project/config/producer"
 	"github.com/svirskey/kafka-practicum/practices/practicum_2/user_message_project/internal/model"
 	"github.com/svirskey/kafka-practicum/practices/practicum_2/user_message_project/pkg/random"
 )
@@ -17,17 +19,10 @@ import (
 
 func main() {
 
-	// Проверяем, что количество параметров при запуске программы ровно 3
-	if len(os.Args) != 3 {
-		log.Fatalf("Пример использования: %s <bootstrap-servers> <topic>\n", os.Args[0])
-	}
-
-	// Парсим параметры и получаем адрес брокера и имя топика
-	bootstrapServers := os.Args[1]
-	topic := os.Args[2]
+	producerCfg := config.LoadProducerConfig()
 
 	// Создаём продюсера
-	p, err := kafka.NewProducer(&kafka.ConfigMap{"bootstrap.servers": bootstrapServers})
+	p, err := kafka.NewProducer(&kafka.ConfigMap{"bootstrap.servers": producerCfg.KafkaBootstrapServers})
 	if err != nil {
 		log.Fatalf("Невозможно создать продюсера: %s\n", err)
 	}
@@ -52,7 +47,7 @@ func main() {
 
 	// Отправляем сообщение в брокер
 	err = p.Produce(&kafka.Message{
-		TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: kafka.PartitionAny},
+		TopicPartition: kafka.TopicPartition{Topic: &producerCfg.KafkaTopic, Partition: kafka.PartitionAny},
 		Value:          payload,
 		Headers:        []kafka.Header{{Key: "myTestHeader", Value: []byte("header values are binary")}},
 	}, deliveryChan)
