@@ -12,6 +12,11 @@ RUN go build -o app_batch_message_consumer ./cmd/batch_message_consumer/batch_me
 # RUN STAGE
 FROM ubuntu:24.04 AS runner
 
+ENV KAFKA_BOOTSTRAP_SERVERS="kafka-0:9094"
+ENV KAFKA_TOPIC="user-msg"
+ENV KAFKA_SESSION_TIMEOUT=6000
+ENV KAFKA_CONSUMER_TIMEOUT=100
+
 WORKDIR /user_message_project
 
 COPY --from=builder /user_message_project/app_batch_message_consumer .

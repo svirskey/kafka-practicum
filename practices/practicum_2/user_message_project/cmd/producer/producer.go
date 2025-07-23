@@ -70,7 +70,6 @@ func main() {
 				*m.TopicPartition.Topic, m.TopicPartition.Partition, m.TopicPartition.Offset)
 		}
 
-
 		time.Sleep(duration)
 	}
 }

@@ -12,6 +12,13 @@ RUN go build -o app_single_message_consumer ./cmd/producer/producer.go
 # RUN STAGE
 FROM ubuntu:24.04 AS runner
 
+ENV KAFKA_BOOTSTRAP_SERVERS="kafka-0:9094"
+ENV KAFKA_TOPIC="user-msg"
+ENV KAFKA_SESSION_TIMEOUT=6000
+ENV KAFKA_CONSUMER_TIMEOUT=100
+ENV KAFKA_ENABLE_AUTO_COMMUT=true
+ENV KAFKA_GROUP_ID=0
+
 WORKDIR /user_message_project
 
 COPY --from=builder /user_message_project/app_single_message_consumer .
