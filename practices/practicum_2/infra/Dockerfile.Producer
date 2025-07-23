@@ -10,10 +10,11 @@ RUN go mod download && go mod verify
 RUN go build -o app_producer ./cmd/producer/producer.go
 
 # RUN STAGE
-FROM ubuntu:24.04 AS runner
+FROM ubuntu:22.04 AS runner
 
-ENV KAFKA_BOOTSTRAP_SERVERS="localhost:9094"
+ENV KAFKA_BOOTSTRAP_SERVERS="kafka-0:9094"
 ENV KAFKA_TOPIC="user-msg"
+ENV MESSAGE_SENDING_RATE="2"
 
 WORKDIR /user_message_project
 

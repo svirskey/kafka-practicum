@@ -12,3 +12,10 @@ docker compose up -d
 kafka-topics.sh --describe --topic my-topic --bootstrap-server localhost:9092
 ```
 
+3.
+
+
+```
+docker logs infra-app-producer-1
+docker logs infra-app-producer-2
+```
