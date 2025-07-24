@@ -3,7 +3,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"time"
 
@@ -32,11 +31,10 @@ func main() {
 	deliveryChan := make(chan kafka.Event)
 	duration := time.Duration(float64(time.Second) / float64(producerCfg.MessageSendingRate))
 	for {
-		log.Println("loop")
 		// Создаём сообщение
 		value := &model.UserMessage{
 			UserId: random.RandRange(0, 1000),
-			Message:  random.RandStringBytes(256),
+			Message:  random.RandStringBytes(32),
 			Timestamp: time.Now(),
 		}
 
@@ -64,12 +62,11 @@ func main() {
 
 		// Если возникла ошибка доставки сообщения
 		if m.TopicPartition.Error != nil {
-			fmt.Printf("Ошибка доставки сообщения: %v\n", m.TopicPartition.Error)
+			log.Printf("Ошибка доставки сообщения: %v\n", m.TopicPartition.Error)
 		} else {
-			fmt.Printf("Сообщение отправлено в топик %s [%d] офсет %v\n",
+			log.Printf("Сообщение %s отправлено в топик %s [%d] оффсет %v\n", payload,
 				*m.TopicPartition.Topic, m.TopicPartition.Partition, m.TopicPartition.Offset)
 		}
-
 		time.Sleep(duration)
 	}
 }

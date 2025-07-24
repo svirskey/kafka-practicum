@@ -7,16 +7,16 @@ COPY ../user_message_project/ .
 
 RUN go mod download && go mod verify
 
-RUN go build -o app_single_message_consumer ./cmd/producer/producer.go
+RUN go build -o app_single_message_consumer ./cmd/single_message_consumer/single_message_consumer.go
 
 # RUN STAGE
 FROM ubuntu:24.04 AS runner
 
-ENV KAFKA_BOOTSTRAP_SERVERS="kafka-0:9094"
+ENV KAFKA_BOOTSTRAP_SERVERS="kafka-0:9094,kafka-0:9097"
 ENV KAFKA_TOPIC="user-msg"
 ENV KAFKA_SESSION_TIMEOUT=6000
 ENV KAFKA_CONSUMER_TIMEOUT=100
-ENV KAFKA_ENABLE_AUTO_COMMUT=true
+ENV KAFKA_ENABLE_AUTO_COMMIT=true
 ENV KAFKA_GROUP_ID=0
 
 WORKDIR /user_message_project
