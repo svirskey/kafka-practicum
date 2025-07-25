@@ -5,3 +5,9 @@ docker exec -it infra-kafka-0-1 kafka-topics.sh --create --topic user-msg --part
 2) Описание топика
 
 docker exec -it infra-kafka-0-1 kafka-topics.sh --describe --topic user-msg  --bootstrap-server kafka-0:9092
+
+Пример вывода:
+Topic: user-msg TopicId: fy7aLfP8Q2Ko91fH7ihqbA PartitionCount: 3       ReplicationFactor: 2    Configs: 
+        Topic: user-msg Partition: 0    Leader: 2       Replicas: 1,2   Isr: 2,1
+        Topic: user-msg Partition: 1    Leader: 2       Replicas: 2,0   Isr: 2,0
+        Topic: user-msg Partition: 2    Leader: 1       Replicas: 0,1   Isr: 1,0

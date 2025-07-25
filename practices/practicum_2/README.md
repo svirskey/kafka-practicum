@@ -27,6 +27,7 @@ docker exec -it infra-kafka-0-1 kafka-topics.sh --describe --topic user-msg  --b
 docker logs infra-app-producer-1
 docker logs infra-app-producer-2
 ```
+![Пример](image-2.png)
 
 - Просмотр логов инстансов консьюмеров, читающих логи по одному
 
@@ -34,6 +35,7 @@ docker logs infra-app-producer-2
 docker logs infra-app-single-message-consumer-1
 docker logs infra-app-single-message-consumer-1
 ```
+![Пример](image-1.png)
 
 - Просмотр логов инстансов консьюмеров, читающих логи пачкой
 
@@ -42,3 +44,4 @@ docker logs infra-app-batch-message-consumer-1
 docker logs infra-app-batch-message-consumer-2
 ```
 
+![Пример](image.png)
