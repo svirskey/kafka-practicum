@@ -1,21 +1,44 @@
-## Установка и запуск Kafka кластера с использованием Kraft
+# Установка и запуск Kafka кластера с использованием Kraft
 
-1. Как развернуть Kafka-кластер.
+### Описание работы приложения 
+
+- Один инстанс приложения продюсера пишет 2 раза в секунду сгенерированное сообщение в топик для имитации работы.
+- При поднятии композа топик автоматически создаётся с нужным количеством партиций и replication-factor
+- Single consumer подписывается на топик и считывает каждое сообщение. Коммит автоматический
+- Batch consumer подписывается на топик и пока не прочитает пачку в 10 сообщений не будет коммитить оффсет. Автокоммит выключен
+
+### Разворачивание Kafka-кластера вместе с приложениями, имитирующими работу.
 
 ```
-docker compose up -d
+make build && make
 ```
 
-2. Вывод информации о созданном топике
+### Вывод информации о созданном топике
 
 ```
-kafka-topics.sh --describe --topic my-topic --bootstrap-server localhost:9092
+docker exec -it infra-kafka-0-1 kafka-topics.sh --describe --topic user-msg  --bootstrap-server kafka-0:9092
 ```
 
-3.
+### Просмотр логов 
 
+- Просмотр логов инстансов продюсеров
 
 ```
 docker logs infra-app-producer-1
 docker logs infra-app-producer-2
 ```
+
+- Просмотр логов инстансов консьюмеров, читающих логи по одному
+
+```
+docker logs infra-app-single-message-consumer-1
+docker logs infra-app-single-message-consumer-1
+```
+
+- Просмотр логов инстансов консьюмеров, читающих логи пачкой
+
+```
+docker logs infra-app-batch-message-consumer-1
+docker logs infra-app-batch-message-consumer-2
+```
+

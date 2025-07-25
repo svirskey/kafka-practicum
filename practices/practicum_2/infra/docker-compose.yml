@@ -124,7 +124,7 @@ services:
      - schema-registry
      - kafka-topic-creator
    deploy:
-    replicas: 3
+    replicas: 2
 
 volumes:
   kafka_practicum_0_data:

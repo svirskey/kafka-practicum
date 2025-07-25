@@ -28,7 +28,6 @@ func main() {
 		"bootstrap.servers":  config.KafkaBootstrapServers,
 		"group.id":           config.KafkaGroupId,
 		"session.timeout.ms": config.KafkaSessionTimeout,
-	//	"auto.offset.reset":  "earliest",
 		"enable.auto.commit": config.KafkaEnableAutoCommit})
 
 	if err != nil {

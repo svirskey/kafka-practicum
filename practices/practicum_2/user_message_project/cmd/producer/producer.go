@@ -19,7 +19,10 @@ func main() {
 	producerCfg := config.LoadProducerConfig()
 
 	// Создаём продюсера
-	p, err := kafka.NewProducer(&kafka.ConfigMap{"bootstrap.servers": producerCfg.KafkaBootstrapServers})
+	p, err := kafka.NewProducer(&kafka.ConfigMap{
+		"bootstrap.servers": producerCfg.KafkaBootstrapServers,
+		"acks": "1", // at least once guarantee
+	})
 	if err != nil {
 		log.Fatalf("Невозможно создать продюсера: %s\n", err)
 		return
