@@ -1,15 +1,13 @@
 package filter
 
-
 import (
-   "context"
-   "log"
+	"context"
+	"log"
 
+	"github.com/lovoo/goka"
 
-   "github.com/lovoo/goka"
-
-   "github.com/svirskey/kafka-practicum/module_2/goka_approved/user"
-   "github.com/svirskey/kafka-practicum/module_2/goka_approved/blocker"
+	"github.com/svirskey/kafka-practicum/module_2/goka_approved/blocker"
+	"github.com/svirskey/kafka-practicum/module_2/goka_approved/user"
 )
 
 
@@ -34,6 +32,7 @@ func RunFilter(brokers []string, inputTopic goka.Stream, outputTopic goka.Stream
       }),
       goka.Output(outputTopic, new(user.LikeCodec)),
       goka.Join(goka.GroupTable(blocker.Group), new(blocker.BlockValueCodec)),
+      goka.Lookup(())
    )
 
 

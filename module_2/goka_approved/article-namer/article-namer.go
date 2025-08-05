@@ -1,4 +1,4 @@
-package blocker
+package articlenamer
 
 
 import (
@@ -12,36 +12,36 @@ import (
 
 
 var (
-   Group goka.Group = "blocker"
+   Group goka.Group = "article-namer"
 )
 
 
-type BlockEvent struct {
-   Unblock bool
+type ArticleNameEvent struct {
+   Name string
 }
 
-type BlockEventCodec struct{}
+type ArticleNameEventCodec struct{}
 
 // Encode переводит UserLike в []byte
-func (bec *BlockEventCodec) Encode(value any) ([]byte, error) {
-   if _, ok := value.(*BlockEvent); !ok {
-      return nil, fmt.Errorf("тип должен быть *BlockEvent, получен %T", value)
+func (bec *ArticleNameEventCodec) Encode(value any) ([]byte, error) {
+   if _, ok := value.(*ArticleNameEvent); !ok {
+      return nil, fmt.Errorf("тип должен быть *ArticleNameEvent, получен %T", value)
    }
    return json.Marshal(value)
 }
 
 
-// Decode переводит UserLike из []byte в структуру.
-func (bec *BlockEventCodec) Decode(data []byte) (any, error) {
+// Decode переводит  из []byte в структуру.
+func (bec *ArticleNameEventCodec) Decode(data []byte) (any, error) {
    var (
-      blockEvent BlockEvent
+      articleNameEvent ArticleNameEvent
       err      error
    )
-   err = json.Unmarshal(data, &blockEvent)
+   err = json.Unmarshal(data, &articleNameEvent)
    if err != nil {
       return nil, fmt.Errorf("ошибка десериализации: %v", err)
    }
-   return &blockEvent, nil
+   return &articleNameEvent, nil
 }
 
 

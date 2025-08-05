@@ -34,7 +34,7 @@ func RunEmitter(brokers []string, outputTopic goka.Stream) {
       fakeUserLike := &user.Like{
          Like:   rand.Intn(2) == 1, // Случайное значение для лайка (true или false)
          UserId: userId,            // Случайный ID пользователя
-		 PostId: rand.Intn(5),      // Случайный ID статьи 
+		   PostId: rand.Intn(5),      // Случайный ID статьи 
       }
 
 

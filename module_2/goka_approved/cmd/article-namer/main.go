@@ -1,19 +1,19 @@
 package main
 
-
 import (
-   "flag"
-   "log"
+	"flag"
+	"log"
 
-   "github.com/lovoo/goka"
+	"github.com/lovoo/goka"
 
-   "github.com/svirskey/kafka-practicum/module_2/goka_approved/blocker"
+	"github.com/svirskey/kafka-practicum/module_2/goka_approved/article-namer"
+	articlenamer "github.com/svirskey/kafka-practicum/module_2/goka_approved/article-namer"
 )
 
 
 var (
-   user    = flag.String("user", "", "user to block")
-   unblock = flag.Bool("unblock", false, "unblock user instead of blocking")
+   articleId = flag.Int("articleId", -1, "article id")
+   articleName  = flag.String("articleName", "", "article name")
    broker  = flag.String("broker", "localhost:29092", "boostrap Kafka broker")
    stream  = flag.String("stream", "", "stream name")
 )
@@ -21,17 +21,17 @@ var (
 
 func main() {
    flag.Parse()
-   if *user == "" {
-      log.Fatal("невозможно заблокировать пользователя ''")
+   if *articleId == -1 || *articleName == "" {
+      log.Fatal("Неверные входные данные")
    }
-   emitter, err := goka.NewEmitter([]string{*broker}, goka.Stream(*stream), new(blocker.BlockEventCodec))
+   emitter, err := goka.NewEmitter([]string{*broker}, goka.Stream(*stream), new(articlenamer.ArticleNameEventCodec))
    if err != nil {
       log.Fatal(err)
    }
    defer emitter.Finish()
 
 
-   err = emitter.EmitSync(*user, &blocker.BlockEvent{Unblock: *unblock})
+   err = emitter.EmitSync(*articleId, &articlenamer.ArticleNameEvent{Name: *articleName})
    if err != nil {
       log.Fatal(err)
    }
