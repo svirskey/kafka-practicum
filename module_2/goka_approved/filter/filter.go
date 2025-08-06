@@ -6,6 +6,8 @@ import (
 
 	"github.com/lovoo/goka"
 
+	"github.com/svirskey/kafka-practicum/module_2/goka_approved/article-namer"
+	articlenamer "github.com/svirskey/kafka-practicum/module_2/goka_approved/article-namer"
 	"github.com/svirskey/kafka-practicum/module_2/goka_approved/blocker"
 	"github.com/svirskey/kafka-practicum/module_2/goka_approved/user"
 )
@@ -21,6 +23,16 @@ func shouldDrop(ctx goka.Context) bool {
    return v != nil && v.(*blocker.BlockValue).Blocked
 }
 
+func translate(ctx goka.Context, l *user.Like) *user.Like {
+	for i, w := range words {
+		if tw := ctx.Lookup(articlenamer.ArticleName, w); tw != nil {
+			words[i] = tw.(string)
+		}
+	}
+	return &user.Like{
+		
+	}
+}
 
 func RunFilter(brokers []string, inputTopic goka.Stream, outputTopic goka.Stream) {
    g := goka.DefineGroup(filterGroup,
@@ -28,13 +40,13 @@ func RunFilter(brokers []string, inputTopic goka.Stream, outputTopic goka.Stream
          if shouldDrop(ctx) {
             return
          }
-         ctx.Emit(outputTopic, ctx.Key(), msg)
+         m:= translate(ctx, msg)
+         ctx.Emit(outputTopic, ctx.Key(), m)
       }),
       goka.Output(outputTopic, new(user.LikeCodec)),
       goka.Join(goka.GroupTable(blocker.Group), new(blocker.BlockValueCodec)),
-      goka.Lookup(())
+      goka.Lookup(goka.GroupTable(articlenamer.Group),new(articlenamer.ArticleNameCodec)),
    )
-
 
    p, err := goka.NewProcessor(brokers, g)
    if err != nil {

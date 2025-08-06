@@ -40,3 +40,12 @@ docker exec -it infra-kafka-0-1 /opt/bitnami/kafka/bin/kafka-topics.sh --create 
 ```
 docker exec -it infra-kafka-0-1 /opt/bitnami/kafka/bin/kafka-topics.sh --create --topic blocker-table --bootstrap-server localhost:9092 --partitions 3 --replication-factor 2 --config cleanup.policy=compact
 ```
+
+```
+docker exec -it infra-kafka-0-1 /opt/bitnami/kafka/bin/kafka-topics.sh --create --topic article-namer-stream --bootstrap-server localhost:9092 --partitions 3 --replication-factor 2 --config cleanup.policy=compact
+```
+
+
+```
+docker exec -it infra-kafka-0-1 /opt/bitnami/kafka/bin/kafka-topics.sh --create --topic article-namer-table --bootstrap-server localhost:9092 --partitions 3 --replication-factor 2 --config cleanup.policy=compact
+```

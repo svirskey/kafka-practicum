@@ -7,12 +7,11 @@ import (
 	"github.com/lovoo/goka"
 
 	"github.com/svirskey/kafka-practicum/module_2/goka_approved/article-namer"
-	articlenamer "github.com/svirskey/kafka-practicum/module_2/goka_approved/article-namer"
 )
 
 
 var (
-   articleId = flag.Int("articleId", -1, "article id")
+   articleId = flag.String("articleId", "", "article id")
    articleName  = flag.String("articleName", "", "article name")
    broker  = flag.String("broker", "localhost:29092", "boostrap Kafka broker")
    stream  = flag.String("stream", "", "stream name")
@@ -21,17 +20,18 @@ var (
 
 func main() {
    flag.Parse()
-   if *articleId == -1 || *articleName == "" {
+   if *articleId == "" || *articleName == "" {
       log.Fatal("Неверные входные данные")
    }
-   emitter, err := goka.NewEmitter([]string{*broker}, goka.Stream(*stream), new(articlenamer.ArticleNameEventCodec))
+   emitter, err := goka.NewEmitter([]string{*broker}, goka.Stream(*stream), new(articlenamer.ArticleNameCodec))
    if err != nil {
       log.Fatal(err)
    }
    defer emitter.Finish()
 
+   log.Printf("[proc] article with id: %s named: %s \n", *articleId, *articleName)
 
-   err = emitter.EmitSync(*articleId, &articlenamer.ArticleNameEvent{Name: *articleName})
+   err = emitter.EmitSync(*articleId, &articlenamer.ArticleName{Name: *articleName})
    if err != nil {
       log.Fatal(err)
    }
